@@ -21,3 +21,17 @@ jobs:
           cd app
           docker build -t ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
+  
+  deploy-to-test:
+    runs-on: ubuntu-latest
+    container: bitnami/kubectl
+    environment: test
+    needs: docker-build
+    steps:
+      - name: Deploy-Kubernetes
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          - export KUBECONFIG=$KUBECONFIG
+          - kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
+
