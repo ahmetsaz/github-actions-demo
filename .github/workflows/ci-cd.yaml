@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir kubeconfig
           echo $KUBECONFIG > ./kubeconfig/config.yaml
+          cat ./kubeconfig/config.yaml
           export KUBECONFIG=./kubeconfig/config.yaml
           kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
 
