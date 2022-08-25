@@ -1,0 +1,15 @@
+name: GitHub Actions Build and Deploy Demo
+on:
+  push:
+    branches:
+      - master
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker Build
+        run: |
+          cd app
+          docker build -t ahmetsaz/github-actions:${{ github.sha }}
