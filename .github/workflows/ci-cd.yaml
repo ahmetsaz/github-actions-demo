@@ -32,8 +32,8 @@ jobs:
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
-          - mkdir kubeconfig
-          - echo $KUBECONFIG > /kubeconfig/config
-          - export KUBECONFIG=/kubeconfig/config
-          - kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
+          mkdir kubeconfig
+          echo $KUBECONFIG > /kubeconfig/config
+          export KUBECONFIG=/kubeconfig/config
+          kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
 
