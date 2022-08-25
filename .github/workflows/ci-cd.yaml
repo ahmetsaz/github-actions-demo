@@ -12,4 +12,4 @@ jobs:
       - name: Docker Build
         run: |
           cd app
-          docker build -t ahmetsaz/github-actions:${{ github.sha }}
+          docker build -t ahmetsaz/github-actions:${{ github.sha }} .
