@@ -14,7 +14,7 @@ on:
     secrets:
       DOCKER_USERNAME:
         required: true
-      KUBE_CONFIG:
+      KUBECONFIG:
         required: true
 jobs:
   deploy:
