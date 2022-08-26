@@ -20,7 +20,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
-    needs: docker-build
     steps:
     - name: Set Context
       uses: azure/k8s-set-context@v2
