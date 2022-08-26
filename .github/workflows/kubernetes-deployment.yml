@@ -19,8 +19,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: docker-build
     environment: ${{inputs.environment}}
+    needs: docker-build
     steps:
     - name: Set Context
       uses: azure/k8s-set-context@v2
