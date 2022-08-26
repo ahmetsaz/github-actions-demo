@@ -9,6 +9,7 @@ jobs:
     with:
       image_name: github-actions
       tag: $GITHUB_RUN_NUMBER
+    secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -18,6 +19,7 @@ jobs:
       image_name: github-actions
       tag: $GITHUB_RUN_NUMBER
       environment: test
+    secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     
