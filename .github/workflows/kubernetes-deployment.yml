@@ -1,5 +1,10 @@
 name: GitHub Actions Resuble Template
 on:
+  workflow_run:
+    workflows: ["docker-build"]
+    types: 
+      - completed
+
   workflow_call:
     inputs:
       image_name:
