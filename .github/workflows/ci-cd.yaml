@@ -5,26 +5,21 @@ on:
       - master
 jobs:
   docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
-        with:
-          image_name: github-actions
-          tag: $GITHUB_RUN_NUMBER
-          registry_username: ${{secrets.DOCKER_USERNAME}}
-          registry_password: ${{secrets.DOCKER_PASSWORD}}
-  
+    uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
+    with:
+      image_name: github-actions
+      tag: $GITHUB_RUN_NUMBER
+      registry_username: ${{secrets.DOCKER_USERNAME}}
+      registry_password: ${{secrets.DOCKER_PASSWORD}}
+
   kubernetes-deployment:
-    runs-on: ubuntu-latest
-    environment: test
-    needs: docker-build
-    steps:
-      - uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
-        with:
-          image_name: github-actions
-          tag: $GITHUB_RUN_NUMBER
-          registry_username: ${{secrets.DOCKER_USERNAME}}
-          registry_password: ${{secrets.DOCKER_PASSWORD}}
+    uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
+    with:
+      image_name: github-actions
+      tag: $GITHUB_RUN_NUMBER
+      environment: test
+      registry_username: ${{secrets.DOCKER_USERNAME}}
+      registry_password: ${{secrets.DOCKER_PASSWORD}}
     
   # docker-build:
   #   runs-on: ubuntu-latest
