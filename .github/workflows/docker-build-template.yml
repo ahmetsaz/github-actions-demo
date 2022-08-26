@@ -13,8 +13,6 @@ on:
         required: true
       DOCKER_PASSWORD:
         required: true
-      KUBE_CONFIG:
-        required: true
 jobs:
   docker-build:
     runs-on: ubuntu-latest
