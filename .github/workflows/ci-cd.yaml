@@ -27,7 +27,7 @@ jobs:
       KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
   kubernetes-prod-deployment:
-    needs: docker-build
+    needs: [docker-build,kubernetes-test-deployment]
     uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
     with:
       image_name: github-actions
