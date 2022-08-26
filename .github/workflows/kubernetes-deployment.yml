@@ -1,9 +1,5 @@
 name: Kubernetes Deployment
 on:
-  workflow_run:
-    workflows: [Docker Build]
-    types:
-      - completed
   workflow_call:
     inputs:
       image_name:
