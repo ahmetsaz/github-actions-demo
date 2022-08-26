@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+
 jobs:
   docker-build:
     uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
