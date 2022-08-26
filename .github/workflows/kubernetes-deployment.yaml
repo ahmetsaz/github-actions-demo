@@ -1,0 +1,29 @@
+name: GitHub Actions Resuble Template
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      KUBE_CONFIG:
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    steps:
+    - name: Set Context
+      uses: azure/k8s-set-context@v2
+      with:
+         method: kubeconfig
+         kubeconfig: ${{ secrets.KUBECONFIG }}
+
+    - name: Set Image
+      run: |
+        kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }}
