@@ -7,7 +7,7 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: ahmetsaz/github-actions-demo/docker-build-template.yaml@master
+      - uses: ahmetsaz/github-actions-demo/docker-build-template@master
         with:
           image_name: github-actions
           tag: $GITHUB_RUN_NUMBER
@@ -19,7 +19,7 @@ jobs:
     environment: test
     needs: docker-build
     steps:
-      - uses: ahmetsaz/github-actions-demo/kubernetes-deployment.yaml@master
+      - uses: ahmetsaz/github-actions-demo/kubernetes-deployment@master
         with:
           image_name: github-actions
           tag: $GITHUB_RUN_NUMBER
