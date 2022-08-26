@@ -9,8 +9,8 @@ jobs:
     with:
       image_name: github-actions
       tag: $GITHUB_RUN_NUMBER
-      registry_username: ${{secrets.DOCKER_USERNAME}}
-      registry_password: ${{secrets.DOCKER_PASSWORD}}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   kubernetes-deployment:
     uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
@@ -18,8 +18,8 @@ jobs:
       image_name: github-actions
       tag: $GITHUB_RUN_NUMBER
       environment: test
-      registry_username: ${{secrets.DOCKER_USERNAME}}
-      registry_password: ${{secrets.DOCKER_PASSWORD}}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     
   # docker-build:
   #   runs-on: ubuntu-latest
