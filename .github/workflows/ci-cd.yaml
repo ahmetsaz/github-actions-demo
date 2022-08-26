@@ -15,13 +15,24 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-  kubernetes-deployment:
+  kubernetes-test-deployment:
     needs: docker-build
     uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
     with:
       image_name: github-actions
       tag: $GITHUB_RUN_NUMBER
       environment: test
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
+  kubernetes-prod-deployment:
+    needs: docker-build
+    uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
+    with:
+      image_name: github-actions
+      tag: $GITHUB_RUN_NUMBER
+      environment: prod
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       KUBECONFIG: ${{ secrets.KUBECONFIG }}
