@@ -10,7 +10,7 @@ jobs:
     uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
     with:
       image_name: github-actions
-      tag: $GITHUB_RUN_NUMBER
+      tag: latest
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
