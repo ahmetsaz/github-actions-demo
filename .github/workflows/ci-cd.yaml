@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Declare some variables
+      - name: Commit id variable
         id: vars
         shell: bash
         run: |
