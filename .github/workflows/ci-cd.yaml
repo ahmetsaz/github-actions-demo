@@ -16,7 +16,7 @@ jobs:
       - name: run sh
         run: |
           chmod +x run.sh
-          run.sh
+          sh run.sh
 
       - name: Commit id variable
         id: vars
