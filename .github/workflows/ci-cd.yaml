@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: run sh
+        run: |
+          chmod +x run.sh
+          run.sh
 
       - name: Commit id variable
         id: vars
