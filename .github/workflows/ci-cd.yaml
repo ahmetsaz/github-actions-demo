@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_TAG: ${{ ((github.ref == 'refs/heads/master') || (startsWith(github.ref, 'refs/heads/bugfix'))) && 'production' || feature }}
+  IMAGE_TAG: ${{ ((github.ref == 'refs/heads/master') || (startsWith(github.ref, 'refs/heads/bugfix'))) && 'production' || 'feature' }}
 
 jobs:
   docker-build:
