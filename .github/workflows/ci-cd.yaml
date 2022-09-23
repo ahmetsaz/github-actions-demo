@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Build and push
+      - name: Build and push Production Image
         uses: docker/build-push-action@v2
         if: ${{ env.IMAGE_TAG == 'production' }}
         with:
@@ -60,7 +60,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      - name: Build and push
+      - name: Build and push Feature Image
         uses: docker/build-push-action@v2
         if: ${{ env.IMAGE_TAG != 'production' }}
         with:
