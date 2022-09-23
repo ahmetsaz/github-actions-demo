@@ -12,24 +12,21 @@ env:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+        
       - name: Echo variable
         run: |
           echo $GITHUB_REF_NAME
           echo $GITHUB_REF
-          echo ${{ env.IMAGE_TAG }}
           echo runner.os
           echo github.ref.name
-        
-      # - name: Commit id variable
-      #   id: vars
-      #   shell: bash
-      #   run: |
-      #     echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Commit id variable
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       
       # - name: Trigger Webhook
       #   run: |
@@ -37,119 +34,44 @@ jobs:
 
 
           
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v1
-      # # So now you can use Actions' own caching!
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-buildx-
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      # So now you can use Actions' own caching!
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
         
-      # - name: Docker Login
-      #   uses: docker/login-action@v2.0.0
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker Login
+        uses: docker/login-action@v2.0.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
-      # - name: Build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./app
-      #     push: true
-      #     tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ steps.vars.outputs.sha_short }},${{ secrets.DOCKER_USERNAME }}/github-actions:production
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache-new
+      - name: Build and push Production Image
+        uses: docker/build-push-action@v2
+        if: ${{ env.IMAGE_TAG == 'production' }}
+        with:
+          context: ./app
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }},${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      # - name: Move cache
-      #   run: |
-      #     rm -rf /tmp/.buildx-cache
-      #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-  # docker-build-witch-cache:
-  #   uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
-  #   with:
-  #     image_name: github-actions
-  #     tag: latest
-  #   secrets:
-  #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Feature Image
+        uses: docker/build-push-action@v2
+        if: ${{ env.IMAGE_TAG != 'production' }}
+        with:
+          context: ./app
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-  # docker-build-with-no-cache:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-        
-  #     - name: Docker Login
-  #       uses: docker/login-action@v2.0.0
-  #       with:
-  #         username: ${{ secrets.DOCKER_USERNAME }}
-  #         password: ${{ secrets.DOCKER_PASSWORD }}
-
-  #     - name: Docker Build & Push
-  #       run: |
-  #         cd app
-  #         docker build -t ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }} .
-  #         docker push ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
-    
-
-  # kubernetes-test-deployment:
-  #   needs: docker-build
-  #   uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
-  #   with:
-  #     image_name: github-actions
-  #     tag: $GITHUB_RUN_NUMBER
-  #     environment: test
-  #   secrets:
-  #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
-
-  # kubernetes-prod-deployment:
-  #   needs: [docker-build,kubernetes-test-deployment]
-  #   uses: ahmetsaz/github-actions-demo/.github/workflows/kubernetes-deployment.yml@master
-  #   with:
-  #     image_name: github-actions
-  #     tag: $GITHUB_RUN_NUMBER
-  #     environment: prod
-  #   secrets:
-  #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      
-    
-  # docker-build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-        
-  #     - name: Docker Login
-  #       uses: docker/login-action@v2.0.0
-  #       with:
-  #         username: ${{ secrets.DOCKER_USERNAME }}
-  #         password: ${{ secrets.DOCKER_PASSWORD }}
-
-  #     - name: Docker Build & Push
-  #       run: |
-  #         cd app
-  #         docker build -t ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }} .
-  #         docker push ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }}
-  
-  # deploy-to-test:
-  #   runs-on: ubuntu-latest
-  #   environment: test
-  #   needs: docker-build
-  #   steps:
-  #   - name: Set Context
-  #     uses: azure/k8s-set-context@v2
-  #     with:
-  #        method: kubeconfig
-  #        kubeconfig: ${{ secrets.KUBECONFIG }}
-         
-  #   - name: Set Image
-  #     run: |
-  #       kubectl --namespace=default set image deployment/demo-app github-actions=${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.sha }} 
-   
-
-      
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
