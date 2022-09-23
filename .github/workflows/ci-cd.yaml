@@ -67,7 +67,7 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ secrets.DOCKER_USERNAME }}/github-actions:${{ github.ref.name }}-${{ steps.vars.outputs.sha_short }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
