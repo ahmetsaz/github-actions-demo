@@ -37,9 +37,9 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       
-      - name: Trigger Webhook
-        run: |
-           curl -X POST -H 'Content-Type: application/json' -d '{commitId:123}' http://rancher-ui.northcentralus.cloudapp.azure.com:8080/generic-webhook-trigger/invoke?token=testPipeline
+     # - name: Trigger Webhook
+      #  run: |
+       #    curl -X POST -H 'Content-Type: application/json' -d '{commitId:123}' http://rancher-ui.northcentralus.cloudapp.azure.com:8080/generic-webhook-trigger/invoke?token=testPipeline
 
 
 
@@ -98,7 +98,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.sha_short }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
