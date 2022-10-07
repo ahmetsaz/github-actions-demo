@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
            echo "$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
-           echo "::set-output name=sha_short2::$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+           echo "::set-output name=sha_short2::$(git rev-parse --abbrev-ref | sed 's/[^a-zA-Z0-9]/-/g')"
            
       - name: Echo
         shell: bash
