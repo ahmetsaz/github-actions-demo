@@ -21,11 +21,12 @@ jobs:
         run: |
           echo ${{ env.IMAGE_TAG }}
         
-      # - name: Commit id variable
-      #   id: vars
-      #   shell: bash
-      #   run: |
-      #     echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Commit id variable
+        id: vars
+        shell: bash
+        run: |
+           echo "$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       
       # - name: Trigger Webhook
       #   run: |
