@@ -38,7 +38,7 @@ jobs:
       - name: Echo
         shell: bash
         run: |
-          echo ${{ steps.vars.outputs.sha_short2 }}
+          echo ${{ steps.vars1.outputs.sha_short2 }}
            
        
       
