@@ -36,6 +36,18 @@ jobs:
         shell: bash
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+  
+      - name: Commit id variable1
+        id: vars1
+        shell: bash
+        run: |
+           echo "$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+           echo "::set-output name=sha_short2::$(git rev-parse --abbrev-ref HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+           
+      - name: Echo
+        shell: bash
+        run: |
+          echo ${{ steps.vars1.outputs.sha_short2 }}
       
      # - name: Trigger Webhook
       #  run: |
