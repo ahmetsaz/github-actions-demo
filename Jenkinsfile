@@ -9,9 +9,11 @@ pipeline {
       }
     }
     stage('Deploy Staging') {
+      steps {
         sh 'ls helm-nexus-pipeline'
         sh 'cd helm-nexus-pipeline'
         sh 'cat values-test.yaml'
      }
    }
+  }
 }
