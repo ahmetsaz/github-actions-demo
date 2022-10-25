@@ -16,9 +16,9 @@ pipeline {
     stage('Deploy Staging') {
       steps {
         sh 'ls -lart'
-        sh 'ls helm-nexus-pipeline'
-        sh 'cd helm-nexus-pipeline'
         sh 'cat values-test.yaml'
+        sh 'ls helm-pipeline'
+        sh 'ls -la' 
      }
    }
   }
