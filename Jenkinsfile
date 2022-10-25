@@ -3,9 +3,7 @@ pipeline {
   stages {
      stage('Helm repo add & update') {
       steps {
-          git branch: 'master',
-              credentialsId: 'github-repo-token',
-              url: 'https://github.com/ahmetsaz/helm-nexus-pipeline.git'
+         sh 'ls'
       }
     }
     stage('Deploy Staging') {
