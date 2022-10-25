@@ -11,14 +11,11 @@ pipeline {
             submoduleCfg: [], 
             userRemoteConfigs: [[credentialsId: 'github-repo-token', url: 'https://github.com/ahmetsaz/helm-nexus-pipeline.git']]
           ])
-        sh 'ls -lart'
-        sh 'ls helm-nexus-pipeline'
-        sh 'cd helm-nexus-pipeline'
-        sh 'cat values-test.yaml'
       }
     }
     stage('Deploy Staging') {
       steps {
+        sh 'ls -lart'
         sh 'ls helm-nexus-pipeline'
         sh 'cd helm-nexus-pipeline'
         sh 'cat values-test.yaml'
