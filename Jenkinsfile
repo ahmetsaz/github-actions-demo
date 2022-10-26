@@ -9,7 +9,7 @@ pipeline {
       when {
         allOf {
           expression { env.ACTION_STATUS == "completed" }
-          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy" }
+          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
         }
       }
       steps {
