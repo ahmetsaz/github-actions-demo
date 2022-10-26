@@ -3,6 +3,8 @@ pipeline {
   environment {
     ACTION_STATUS = "${actionstatus}"
     ACTION_NAME = "${actionname}"
+    IMAGE_TAG = ""
+    COMMITID = "${commitid}"
   }
   stages {
      stage('Helm repo add & update') {
@@ -12,10 +14,29 @@ pipeline {
           expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
         }
       }
+       
       steps {
          sh 'echo $actionstatus'
          sh 'echo $actionname'
       }
     }
+    stage('test3') {
+        when {
+        allOf {
+          expression { env.ACTION_STATUS == "completed" }
+          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
+        }
+      }
+          steps {
+              script {
+                  env.COMMITID=$(git rev-parse --short ${env.COMMITID})
+                  if (env.BRANCH_NAME == 'master') {
+                      env.IMAGETAG=production-env.COMMITID
+                  } else {
+                      env.IMAGETAG=feature-env.COMMITID
+                  }
+              }
+          }
+      }
   }
 }
