@@ -30,9 +30,9 @@ pipeline {
           steps {
               script {
                   if (env.BRANCH_NAME == 'master') {
-                      env.IMAGETAG=production-env.COMMITID
+                      env.IMAGETAG="production-"env.COMMITID
                   } else {
-                      env.IMAGETAG=feature-env.COMMITID
+                      env.IMAGETAG="feature-env".COMMITID
                   }
               }
           }
