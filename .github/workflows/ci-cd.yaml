@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - test-jenkins
   workflow_dispatch:
 
 env:
