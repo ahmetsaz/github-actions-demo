@@ -5,6 +5,7 @@ pipeline {
     ACTION_NAME = "${actionname}"
     IMAGE_TAG = ""
     COMMITID = sh (script: """git rev-parse --short ${commitid}""", returnStdout:true)
+    BRANCH="${branchname}"
   }
   stages {
      stage('Helm repo add & update') {
@@ -29,7 +30,7 @@ pipeline {
         }
           steps {
               script {
-                  if (env.BRANCH_NAME == 'master') {
+                  if (env.BRANCH == 'master') {
                       env.IMAGETAG="production-${COMMITID}"
                   } else {
                       env.IMAGETAG="feature-${COMMITID}"
