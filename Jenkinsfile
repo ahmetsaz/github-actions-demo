@@ -8,8 +8,8 @@ pipeline {
      stage('Helm repo add & update') {
       when {
         allOf {
-          expression { env.ACTION_STATUS == "complated" }
-          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy " }
+          expression { env.ACTION_STATUS == "completed" }
+          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy" }
         }
       }
       steps {
