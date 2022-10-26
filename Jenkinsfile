@@ -4,7 +4,7 @@ pipeline {
     ACTION_STATUS = "${actionstatus}"
     ACTION_NAME = "${actionname}"
     IMAGE_TAG = ""
-    COMMITID = "${commitid}"
+    COMMITID = sh (script: """git rev-parse --short ${commitid}""", returnStdout:true)
   }
   stages {
      stage('Helm repo add & update') {
@@ -23,13 +23,12 @@ pipeline {
     stage('test3') {
         when {
         allOf {
-          expression { env.ACTION_STATUS == "completed" }
-          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
+            expression { env.ACTION_STATUS == "completed" }
+            expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
+          }
         }
-      }
           steps {
               script {
-                  env.COMMITID=$(git rev-parse --short ${env.COMMITID})
                   if (env.BRANCH_NAME == 'master') {
                       env.IMAGETAG=production-env.COMMITID
                   } else {
