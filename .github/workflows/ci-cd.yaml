@@ -37,82 +37,82 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
   
-      - name: Commit id variable1
-        id: vars1
-        shell: bash
-        run: |
-           echo "$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
-           echo "::set-output name=sha_short2::$(git rev-parse --abbrev-ref HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+    #   - name: Commit id variable1
+    #     id: vars1
+    #     shell: bash
+    #     run: |
+    #        echo "$(git rev-parse --short HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
+    #        echo "::set-output name=sha_short2::$(git rev-parse --abbrev-ref HEAD | sed 's/[^a-zA-Z0-9]/-/g')"
            
-      - name: Echo
-        shell: bash
-        run: |
-          echo ${{ steps.vars1.outputs.sha_short2 }}
+    #   - name: Echo
+    #     shell: bash
+    #     run: |
+    #       echo ${{ steps.vars1.outputs.sha_short2 }}
       
-     # - name: Trigger Webhook
-      #  run: |
-       #    curl -X POST -H 'Content-Type: application/json' -d '{commitId:123}' http://rancher-ui.northcentralus.cloudapp.azure.com:8080/generic-webhook-trigger/invoke?token=testPipeline
+    #  # - name: Trigger Webhook
+    #   #  run: |
+    #    #    curl -X POST -H 'Content-Type: application/json' -d '{commitId:123}' http://rancher-ui.northcentralus.cloudapp.azure.com:8080/generic-webhook-trigger/invoke?token=testPipeline
 
 
 
           
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      # So now you can use Actions' own caching!
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+    #   - name: Set up Docker Buildx
+    #     uses: docker/setup-buildx-action@v1
+    #   # So now you can use Actions' own caching!
+    #   - name: Cache Docker layers
+    #     uses: actions/cache@v2
+    #     with:
+    #       path: /tmp/.buildx-cache
+    #       key: ${{ runner.os }}-buildx-${{ github.sha }}
+    #       restore-keys: |
+    #         ${{ runner.os }}-buildx-
         
-      - name: Docker Login
-        uses: docker/login-action@v2.0.0
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    #   - name: Docker Login
+    #     uses: docker/login-action@v2.0.0
+    #     with:
+    #       username: ${{ secrets.DOCKER_USERNAME }}
+    #       password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Build and push Production Image
-        uses: docker/build-push-action@v2
-        if: ${{ env.IMAGE_TAG == 'production' }}
-        with:
-          context: ./app
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }},${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+    #   - name: Build and push Production Image
+    #     uses: docker/build-push-action@v2
+    #     if: ${{ env.IMAGE_TAG == 'production' }}
+    #     with:
+    #       context: ./app
+    #       push: true
+    #       tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }},${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}
+    #       cache-from: type=local,src=/tmp/.buildx-cache
+    #       cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      - name: Build and push Feature Image
-        uses: docker/build-push-action@v2
-        if: ${{ env.IMAGE_TAG != 'production' }}
-        with:
-          context: ./app
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+    #   - name: Build and push Feature Image
+    #     uses: docker/build-push-action@v2
+    #     if: ${{ env.IMAGE_TAG != 'production' }}
+    #     with:
+    #       context: ./app
+    #       push: true
+    #       tags: ${{ secrets.DOCKER_USERNAME }}/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
+    #       cache-from: type=local,src=/tmp/.buildx-cache
+    #       cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+    #   - name: Move cache
+    #     run: |
+    #       rm -rf /tmp/.buildx-cache
+    #       mv /tmp/.buildx-cache-new /tmp/.buildx-cache
   
   
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}  
+    #   - name: Log in to the Container registry
+    #     uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+    #     with:
+    #       registry: ${{ env.REGISTRY }}
+    #       username: ${{ github.actor }}
+    #       password: ${{ secrets.GITHUB_TOKEN }}  
     
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: ./app
-          push: true
-          tags: ${{ env.REGISTRY }}/ahmetsaz/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
+    #   - name: Build and push Docker image
+    #     uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+    #     with:
+    #       context: ./app
+    #       push: true
+    #       tags: ${{ env.REGISTRY }}/ahmetsaz/github-actions:${{ env.IMAGE_TAG}}-${{ steps.vars.outputs.sha_short }}
   # docker-build-witch-cache:
   #   uses: ahmetsaz/github-actions-demo/.github/workflows/docker-build-template.yml@master
   #   with:
