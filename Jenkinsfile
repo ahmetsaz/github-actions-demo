@@ -4,14 +4,7 @@ pipeline {
     
      stage('Helm repo add & update') {
       steps {
-           checkout([
-            $class: 'GitSCM', 
-            branches: [[name: '*/master']], 
-            doGenerateSubmoduleConfigurations: false, 
-            extensions: [], 
-            submoduleCfg: [], 
-            userRemoteConfigs: [[credentialsId: 'github-repo-token', url: 'https://github.com/ahmetsaz/helm-nexus-pipeline.git']]
-          ])
+         sh 'echo test'
       }
     }
     stage('Deploy Staging') {
