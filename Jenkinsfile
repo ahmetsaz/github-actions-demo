@@ -1,8 +1,8 @@
 pipeline {
   agent any
   environment {
-    ACTION_STATUS=$actionstatus
-    ACTION_NAME=$actionname
+    ACTION_STATUS = $actionstatus
+    ACTION_NAME = $actionname
   }
   stages {
      stage('Helm repo add & update') {
