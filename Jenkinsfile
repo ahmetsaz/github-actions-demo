@@ -20,36 +20,23 @@ pipeline {
          sh 'echo $actionstatus'
          sh 'echo $actionname'
       }
-    }
-    stage('test3') {
-        when {
-        allOf {
-            expression { env.ACTION_STATUS == "completed" }
-            expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
-          }
+
+
+
+     steps {
+        script {
+            if (env.BRANCH == 'master') {
+                env.IMAGETAG="production-${COMMITID}"
+            } else {
+                env.IMAGETAG="feature-${COMMITID}"
+            }
         }
-          steps {
-              script {
-                  if (env.BRANCH == 'master') {
-                      env.IMAGETAG="production-${COMMITID}"
-                  } else {
-                      env.IMAGETAG="feature-${COMMITID}"
-                  }
-              }
-          }
       }
 
-     stage('echo') {
-      when {
-        allOf {
-          expression { env.ACTION_STATUS == "completed" }
-          expression { env.ACTION_NAME  == "GitHub Actions Build and Deploy Demo" }
-        }
-      }
-       
-      steps {
+    steps {
          sh 'echo $IMAGETAG'
-      }
     }
+  }
+
   }
 }
