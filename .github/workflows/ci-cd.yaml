@@ -97,6 +97,15 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  deploy-to-test:
+    runs-on: ubuntu-latest
+    environment: test
+    needs: docker-build
+    steps:
+    - name: Set Image
+      run: |
+        echo "triggered cd pipeline"
   
   
     #   - name: Log in to the Container registry
